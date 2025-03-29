@@ -6,4 +6,11 @@
 	console.log(data);
 </script>
 
-<h2>{data.title}</h2>
+<h2 class="story-title" style={`view-transition-name: story-title-${data.story_id}`}>
+	{data.title}
+</h2>
+
+<style>
+	.story-title {
+	}
+</style>

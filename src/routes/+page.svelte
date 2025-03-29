@@ -11,7 +11,9 @@
 	{#each data.posts as post}
 		<article>
 			<a href={`/story/${post.story_id}`} class="link">
-				<h2>{post.title}</h2>
+				<h2 class="story-title" style={`view-transition-name: story-title-${post.story_id}`}>
+					{post.title}
+				</h2>
 				<p>{post.points}</p>
 			</a>
 		</article>
@@ -28,5 +30,11 @@
 	.link {
 		display: block;
 		padding: 4px;
+	}
+
+	.story-title {
+		font-size: 1.1rem;
+		font-weight: bold;
+		color: #333;
 	}
 </style>

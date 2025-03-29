@@ -5,3 +5,11 @@
 </script>
 
 {@render children()}
+
+<style>
+	:global {
+		@view-transition {
+			navigation: auto;
+		}
+	}
+</style>
