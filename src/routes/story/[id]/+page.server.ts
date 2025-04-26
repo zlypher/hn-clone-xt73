@@ -1,11 +1,14 @@
+import { loadStory } from '$lib/hn-client';
+import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ params }) => {
-	console.log(params.id);
-	const response = await fetch('http://hn.algolia.com/api/v1/items/' + parseInt(params.id, 10));
-	const data = await response.json();
+	const result = await loadStory(params.id);
+	if (result.status === 'error') {
+		error(404, 'Story not found');
+	}
 
 	return {
-		...data
+		...result.data
 	};
 };

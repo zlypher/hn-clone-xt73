@@ -1,11 +1,14 @@
+import { loadNewestStories } from '$lib/hn-client';
+import { error } from '@sveltejs/kit';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async () => {
-	const response = await fetch('http://hn.algolia.com/api/v1/search_by_date?tags=story');
-	const data = await response.json();
-	const posts = data.hits;
+	const result = await loadNewestStories();
+	if (result.status === 'error') {
+		error(500, 'Could not load newest stories');
+	}
 
 	return {
-		posts
+		stories: result.data
 	};
 };

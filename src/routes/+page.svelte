@@ -2,19 +2,18 @@
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
-
-	console.log(data);
 </script>
 
-<h2>Posts</h2>
+<h2>Stories</h2>
 <section class="stories">
-	{#each data.posts as post}
+	{#each data.stories as story}
 		<article>
-			<a href={`/story/${post.story_id}`} class="link">
-				<h2 class="story-title" style={`view-transition-name: story-title-${post.story_id}`}>
-					{post.title}
+			<a href={`/story/${story.story_id}`} class="link">
+				<h2 class="story-title" style={`view-transition-name: story-title-${story.story_id}`}>
+					{story.title}
 				</h2>
-				<p>{post.points}</p>
+				<p>{story.points}</p>
+				<p>{story.num_comments}</p>
 			</a>
 		</article>
 	{/each}
