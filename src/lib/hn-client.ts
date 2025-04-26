@@ -30,6 +30,11 @@ export type NewestStoryEntry = {
 export type Story = {
 	story_id: number;
 	title: string;
+	url: string;
+	id: number;
+	author: string;
+	points: number;
+	created_at: string;
 	children: Comment[];
 };
 

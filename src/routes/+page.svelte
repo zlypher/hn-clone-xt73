@@ -6,7 +6,9 @@
 	let { data }: PageProps = $props();
 </script>
 
-<Header></Header>
+<Header>
+	<h1>Stories</h1>
+</Header>
 <main>
 	<section class="stories">
 		{#each data.stories as story}

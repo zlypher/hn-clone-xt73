@@ -1,14 +1,15 @@
 <script lang="ts">
+	let { children } = $props();
 </script>
 
 <header class="header">
-	<h1>Stories</h1>
+	{@render children?.()}
 </header>
 
 <style>
 	.header {
 		display: flex;
-		height: 64px;
+		height: 48px;
 		align-items: center;
 		background-color: aliceblue;
 		padding-inline: 16px;
