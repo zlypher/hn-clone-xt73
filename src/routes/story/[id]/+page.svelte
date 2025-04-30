@@ -20,9 +20,8 @@
 		<h2 class="title" style={`view-transition-name: story-title-${data.story_id}`}>
 			{data.title}
 			<div class="subtitle">
-				{extractDomain(data.url)} - {data.points} points by {data.author} | {formatDate(
-					data.created_at
-				)}
+				{#if data.url}<span>{extractDomain(data.url)} • </span>{/if}
+				<span>{data.points} points by {data.author} | {formatDate(data.created_at)}</span>
 			</div>
 		</h2>
 		<div class="links">
