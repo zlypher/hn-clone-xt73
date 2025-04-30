@@ -12,17 +12,41 @@
 <main>
 	<section class="stories">
 		{#each data.stories as story}
-			<Story {story} />
+			<div class="story-item">
+				<div class="action"></div>
+				<div class="story-wrapper">
+					<Story {story} />
+				</div>
+				<div class="action"></div>
+			</div>
 		{/each}
 	</section>
 </main>
 
 <style>
-	main {
-	}
-
 	.stories {
 		display: flex;
 		flex-direction: column;
+	}
+
+	.story-item {
+		display: flex;
+		overflow: auto;
+		overflow-x: scroll;
+		scroll-snap-type: x mandatory;
+
+		&::-webkit-scrollbar {
+			display: none;
+		}
+	}
+
+	.story-wrapper {
+		scroll-snap-align: center;
+		min-width: 100%;
+	}
+
+	.action {
+		min-width: 40%;
+		background-color: cadetblue;
 	}
 </style>
