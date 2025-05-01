@@ -1,10 +1,14 @@
+import type { NewestStoryEntry } from './hn-client';
+
 export function bookmarks() {
 	if (typeof window === 'undefined') {
 		return [];
 	}
 
 	const existing = localStorage.getItem('bookmarks');
-	let state = $state<object[]>(existing ? (JSON.parse(existing) as object[]) : []);
+	let state = $state<NewestStoryEntry[]>(
+		existing ? (JSON.parse(existing) as NewestStoryEntry[]) : []
+	);
 
 	$effect(() => {
 		localStorage.setItem('bookmarks', JSON.stringify(state));
@@ -14,7 +18,7 @@ export function bookmarks() {
 		get current() {
 			return state;
 		},
-		set current(newValue: object[]) {
+		set current(newValue: NewestStoryEntry[]) {
 			state = newValue;
 		}
 	};

@@ -5,6 +5,7 @@
 	import type { PageProps } from './$types';
 	import { bookmarks } from '$lib/boomarks.svelte';
 	import StoryListItem from '../components/StoryListItem.svelte';
+	import type { NewestStoryEntry } from '$lib/hn-client';
 
 	let { data }: PageProps = $props();
 	let bmarks = bookmarks();
@@ -14,26 +15,42 @@
 
 	let toggleBookmarkFilter = () => {
 		filterBookmarks = !filterBookmarks;
+		console.log('toggleBookmarkFilter', filterBookmarks);
+	};
+
+	let addBookmark = (story: NewestStoryEntry) => {
+		if (!bmarks.current.find((s: NewestStoryEntry) => s.story_id === story.story_id)) {
+			bmarks.current.push(story);
+		}
+	};
+
+	let removeBookmark = (story: NewestStoryEntry) => {
+		// TODO: On Remove -> Elements get stuck
+		bmarks.current = bmarks.current.filter((s: NewestStoryEntry) => s.story_id !== story.story_id);
 	};
 </script>
 
 <Header>
 	<div class="header-inner">
-		<h1>Stories</h1>
+		{#if filterBookmarks}
+			<h1>Bookmarks</h1>
+		{:else}
+			<h1>Stories</h1>
+		{/if}
 		<button class="show-bookmarks" onclick={toggleBookmarkFilter}><Bookmark size={20} /></button>
 	</div>
 </Header>
 <main>
 	<section class="stories">
 		{#if filterBookmarks}
-			{#each data.stories as story}
-				<StoryListItem>
+			{#each bmarks.current as story}
+				<StoryListItem onSwipeLeft={() => removeBookmark(story)}>
 					<Story {story} />
 				</StoryListItem>
 			{/each}
 		{:else}
 			{#each data.stories as story}
-				<StoryListItem>
+				<StoryListItem onSwipeLeft={() => addBookmark(story)}>
 					<Story {story} />
 				</StoryListItem>
 			{/each}
