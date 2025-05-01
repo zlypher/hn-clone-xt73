@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Bookmark, BookMarkedIcon } from '@lucide/svelte';
+	import { Bookmark } from '@lucide/svelte';
 	import Header from '../components/Header.svelte';
 	import Story from '../components/Story.svelte';
 	import type { PageProps } from './$types';
@@ -9,9 +9,16 @@
 
 	let { data }: PageProps = $props();
 	let bmarks = bookmarks();
+	let isBookmarkedMap: Record<string, boolean> = $derived.by(() => {
+		return (bmarks.current || []).reduce(
+			(acc: Record<string, boolean>, story: NewestStoryEntry) => {
+				acc[story.story_id] = true;
+				return acc;
+			},
+			{} as Record<string, boolean>
+		);
+	});
 	let filterBookmarks = $state(false);
-
-	console.log(bmarks.current);
 
 	let toggleBookmarkFilter = () => {
 		filterBookmarks = !filterBookmarks;
@@ -45,13 +52,13 @@
 		{#if filterBookmarks}
 			{#each bmarks.current as story}
 				<StoryListItem onSwipeLeft={() => removeBookmark(story)}>
-					<Story {story} />
+					<Story {story} isBookmarked={true} />
 				</StoryListItem>
 			{/each}
 		{:else}
 			{#each data.stories as story}
 				<StoryListItem onSwipeLeft={() => addBookmark(story)}>
-					<Story {story} />
+					<Story {story} isBookmarked={!!isBookmarkedMap[story.story_id]} />
 				</StoryListItem>
 			{/each}
 		{/if}
