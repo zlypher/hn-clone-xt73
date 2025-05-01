@@ -1,52 +1,64 @@
 <script lang="ts">
+	import { Bookmark, BookMarkedIcon } from '@lucide/svelte';
 	import Header from '../components/Header.svelte';
 	import Story from '../components/Story.svelte';
 	import type { PageProps } from './$types';
+	import { bookmarks } from '$lib/boomarks.svelte';
+	import StoryListItem from '../components/StoryListItem.svelte';
 
 	let { data }: PageProps = $props();
+	let bmarks = bookmarks();
+	let filterBookmarks = $state(false);
+
+	console.log(bmarks.current);
+
+	let toggleBookmarkFilter = () => {
+		filterBookmarks = !filterBookmarks;
+	};
 </script>
 
 <Header>
-	<h1>Stories</h1>
+	<div class="header-inner">
+		<h1>Stories</h1>
+		<button class="show-bookmarks" onclick={toggleBookmarkFilter}><Bookmark size={20} /></button>
+	</div>
 </Header>
 <main>
 	<section class="stories">
-		{#each data.stories as story}
-			<div class="story-item">
-				<div class="action"></div>
-				<div class="story-wrapper">
+		{#if filterBookmarks}
+			{#each data.stories as story}
+				<StoryListItem>
 					<Story {story} />
-				</div>
-				<div class="action"></div>
-			</div>
-		{/each}
+				</StoryListItem>
+			{/each}
+		{:else}
+			{#each data.stories as story}
+				<StoryListItem>
+					<Story {story} />
+				</StoryListItem>
+			{/each}
+		{/if}
 	</section>
 </main>
 
 <style>
+	.header-inner {
+		display: flex;
+		width: 100%;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.show-bookmarks {
+		background-color: thistle;
+		border: none;
+		cursor: pointer;
+		border-radius: 50%;
+		padding: 0.5rem;
+	}
+
 	.stories {
 		display: flex;
 		flex-direction: column;
-	}
-
-	.story-item {
-		display: flex;
-		overflow: auto;
-		overflow-x: scroll;
-		scroll-snap-type: x mandatory;
-
-		&::-webkit-scrollbar {
-			display: none;
-		}
-	}
-
-	.story-wrapper {
-		scroll-snap-align: center;
-		min-width: 100%;
-	}
-
-	.action {
-		min-width: 40%;
-		background-color: cadetblue;
 	}
 </style>
